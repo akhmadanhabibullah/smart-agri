@@ -30,12 +30,12 @@
         </div>
     </nav> --}}
     
-    <nav class="navbar navbar-light bg-light static-top">
+    {{-- <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
             <a class="navbar-brand" href="/">Smart Agriculture</a>
             <a class="btn btn-primary" href="/dashboard">Dashboard</a>
         </div>
-    </nav>
+    </nav> --}}
 
 
     <div class="container">
