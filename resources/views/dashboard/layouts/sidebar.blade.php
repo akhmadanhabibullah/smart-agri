@@ -20,7 +20,7 @@
                             Dashboard
                         </a>
                     </li>
-                    @can('admin')
+                    {{-- @can('admin') --}}
                         <li class="nav-item">
                             <a class="dropdown-item nav-link {{ Request::is('dashboard/measurement') ? 'active' : '' }}"
                                 href="/dashboard/measurement">
@@ -35,7 +35,7 @@
                                 Lokasi
                             </a>
                         </li>
-                    @endcan
+                    {{-- @endcan --}}
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -51,7 +51,7 @@
                             Dashboard
                         </a>
                     </li>
-                    @can('admin')
+                    {{-- @can('admin') --}}
                         <li class="nav-item">
                             <a class="dropdown-item nav-link {{ Request::is('dashboard/measurement-2*') ? 'active' : '' }}"
                                 href="/dashboard/measurement-2">
@@ -66,7 +66,7 @@
                                 Lokasi
                             </a>
                         </li>
-                    @endcan
+                    {{-- @endcan --}}
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
                             Dashboard
                         </a>
                     </li>
-                    @can('admin')
+                    {{-- @can('admin') --}}
                         <li class="nav-item">
                             <a class="dropdown-item nav-link {{ Request::is('dashboard/measurement-3*') ? 'active' : '' }}"
                                 href="/dashboard/measurement-3">
@@ -97,7 +97,7 @@
                                 Lokasi
                             </a>
                         </li>
-                    @endcan
+                    {{-- @endcan --}}
                 </ul>
             </li>
             <li class="nav-item">
@@ -106,8 +106,8 @@
                     Peta
                 </a>
             </li>
-            @can('admin')
-                <li class="nav-item dropdown">
+            {{-- @can('admin') --}}
+                {{-- <li class="nav-item dropdown">
                     <a href="#" role="button" class="nav-link collapsed dropdown-toggle" data-bs-toggle="collapse"
                         data-bs-target="#auth4" aria-expanded="false" aria-controls="auth">
                         <span data-feather="settings"></span> Tampilan
@@ -133,7 +133,7 @@
                                 Testimoni
                             </a>
                         </li> 
-                    </ul>
+                    </ul> --}}
                     <li class="nav-item">
                         <a class="nav-link  {{ Request::is('dashboard/table-guideline*') ? 'active' : '' }}"
                             href="/dashboard/table-guideline">
@@ -144,7 +144,7 @@
                 </li>
                 
             </ul>
-        @endcan
+        {{-- @endcan --}}
 
     </div>
 </nav>

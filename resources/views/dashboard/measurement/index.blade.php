@@ -62,56 +62,54 @@
     @endif
 
     <div class="table-responsive col-lg-12">
-        <a href="/dashboard/measurement/create" class="btn btn-primary mb-3">Tambah Pengukuran</a>
+        {{-- <a href="/dashboard/measurement/create" class="btn btn-primary mb-3">Tambah Pengukuran</a> --}}
         <table class="table table-striped table-sm align-middle">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Suhu</th>
+                    <th scope="col">ID Ukur</th>
+                    <th scope="col">Suhu (°C)</th>
                     <th scope="col">pH</th>
-                    <th scope="col">Kelembaban</th>
-                    <th scope="col">Nitrogen</th>
-                    <th scope="col">Fosfor</th>
-                    <th scope="col">Kalium</th>
+                    <th scope="col">Kelembaban (%)</th>
+                    <th scope="col">Nitrogen (%)</th>
+                    <th scope="col">Fosfor (%)</th>
+                    <th scope="col">Kalium (Me/100 gr)</th>
                     <th scope="col">Konduktivitas Listrik</th>
-                    <th scope="col">ID Lokasi</th>
                     <th scope="col">Garis Lintang (Latitude)</th>
                     <th scope="col">Garis Bujur (Longitude)</th>
-                    <th scope="col">Ketinggian (Altitude)</th>
                     <th scope="col">Tanggal</th>
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($measurements as $measurement)
+                @foreach ($datasmartsoil1 as $measurement)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>{{ $measurement->TS }}</td>
                         <td>{{ $measurement->temperature }}</td>
                         <td>{{ $measurement->ph }}</td>
                         <td>{{ $measurement->moisture }}%</td>
                         <td>{{ $measurement->nitrogen }}</td>
-                        <td>{{ $measurement->phosporus }}</td>
-                        <td>{{ $measurement->potassium }}</td>
-                        <td>{{ $measurement->ec }}</td>
-                        <td>{{ $measurement->idLocation }}</td>
+                        <td>{{ $measurement->fosfor }}</td>
+                        <td>{{ $measurement->kalium }}</td>
+                        <td>{{ $measurement->conductivity }}</td>
                         <td>{{ $measurement->latitude }}</td>
                         <td>{{ $measurement->longitude }}</td>
-                        <td>{{ $measurement->altitude }}</td>
-                        <td>{{ $measurement->updated_at }}</td>
+                        <td>{{ $measurement->TimeStamp }}</td>
                         <td>
-                            <a href="/dashboard/measurement/{{ $measurement->idMeasurement }}" class="badge bg-info"><span
+                            <a href="/dashboard/measurement/{{ $measurement->TS }}" class="badge bg-info"><span
                                     data-feather="eye"></span></a>
-                            <a href="/dashboard/measurement/{{ $measurement->idMeasurement }}/edit"
+                            {{-- <a href="/dashboard/measurement/{{ $measurement->TS }}/edit"
                                 class="badge bg-warning"><span data-feather="edit"></span></a>
 
-                            <form action="/dashboard/measurement/{{ $measurement->idMeasurement }}" method="post"
+                            <form action="/dashboard/measurement/{{ $measurement->TS }}" method="post"
                                 class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <button class="badge bg-danger border-0"
                                     onclick="return confirm('Anda yakin akan menghapus data pengukuran ini?')">
                                     <span data-feather="x-circle"></span></button>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

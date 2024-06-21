@@ -6,11 +6,11 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="post" action="/dashboard/location-3/{{ $location3->idLocation }}" class="mb-3"
+        <form method="post" action="/dashboard/location-3/{{ $location3->TS }}" class="mb-3"
             enctype="multipart/form-data">
             @method('put')
             @csrf
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="name" class="form-label">Nama</label>
                 <input type="text" value="{{ $location3->name }}"
                     class="form-control @error('name') is-invalid @enderror" name="name" id="name" required disabled
@@ -31,7 +31,7 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
                 <input type="text" value="{{ $location3->latitude }}"
@@ -83,9 +83,8 @@
 
         L.marker([latitude.value, longitude.value])
             .bindPopup(
-                "<div class='my-1'><strong>Name:</strong> <br>{{ $location3->name }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location3->latitude }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location3->longitude }}</div>"
+                "<div class='my-1'><strong>Longitude:</strong> <br>{{ $location3->longitude }}</div>" +
+                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location3->latitude }}</div>"
             ).addTo(map);
     </script>
 @endsection

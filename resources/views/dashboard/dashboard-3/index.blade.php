@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <div class="accordion border-bottom py-3" id="accordionExample">
+    {{-- <div class="accordion border-bottom py-3" id="accordionExample">
         <h1 class="h5">Rekomendasi</h1>
         <h1 class="h6 fw-lighter">rekomendasi secara keseluruhan berdasarkan pengukuran terakhir dari semua parameter</h1>
         <div class="accordion-item">
@@ -76,7 +76,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="container-fluid mt-2 py-2 px-0">
         <h1 class="h5">Grafik Data Pengukuran Air Pintar</h1>
@@ -108,25 +108,55 @@
         const flowratectx = document.getElementById('flowRateChart');
         const rainfallctx = document.getElementById('rainFallChart');
 
-        const labels = {!! json_encode(
-            $measurements->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
+        // Assuming the data is already sorted in ascending order by timestamp
+        const data = {!! json_encode($measurements3 ?? []) !!};
+    
+        // Function to format timestamps
+        const formatTimestamp = (timestamp) => {
+            const date = new Date(timestamp);
+            return date.getDate() + '-' + (date.getMonth() + 1) + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        };
+    
+        // Extract latest 10 data points and format timestamps
+        const latestData = data.slice(-10);
+        const labels = latestData.map(item => formatTimestamp(item.TS));
 
-        const distanceData = {!! json_encode($measurements->pluck('distance')) !!};
-        const flowRateData = {!! json_encode($measurements->pluck('flowRate')) !!};
-        const rainFallData = {!! json_encode($measurements->pluck('rainFall')) !!};
+        const distanceData = latestData.map(item => item.jarak);
+        const flowRateData = latestData.map(item => item['flow rate']);
+        const rainFallData = latestData.map(item => item['curah hujan']);
 
-        const latestData = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
+
+        // Function to create a chart
+        const createChart = (ctx, label, data, borderColor, backgroundColor) => {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        backgroundColor: backgroundColor,
+                        fill: true,
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
         };
 
-        const latestLabels = latestData(labels, 10);
-
+        // Create charts
+        createChart(distancectx, 'Jarak', distanceData, 'rgba(255, 206, 86, 1)', 'rgba(255, 206, 86, 0.2)');
+        createChart(flowratectx, 'Laju Arus', flowRateData, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
+        createChart(rainfallctx, 'Curah Hujan', rainFallData, 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)');
+    
+        
         const distance = {
             label: 'Jarak',
             data: latestData(distanceData, 10),
@@ -135,70 +165,6 @@
             backgroundColor: 'rgba(255, 206, 86, 0.2)',
             fill: true,
         };
-
-        const flowRate = {
-            label: 'Laju Arus',
-            data: latestData(flowRateData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for humidity
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: true,
-        };
-
-        const rainFall = {
-            label: 'Curah Hujan',
-            data: latestData(rainFallData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: true,
-        };
-
-
-        new Chart(distancectx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [distance],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(flowratectx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [flowRate],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(rainfallctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [rainFall],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
     </script>
 
 

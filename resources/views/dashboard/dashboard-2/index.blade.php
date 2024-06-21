@@ -130,149 +130,61 @@
         const nitrogenctx = document.getElementById('nitrogenChart');
         const phosporusctx = document.getElementById('phosporusChart');
         const potassiumctx = document.getElementById('potassiumChart');
-
-        const labels = {!! json_encode(
-            $measurements2->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
-
-        const phData = {!! json_encode($measurements2->pluck('ph')) !!};
-        const moistureData = {!! json_encode($measurements2->pluck('moisture')) !!};
-        const nitrogenData = {!! json_encode($measurements2->pluck('nitrogen')) !!};
-        const phosphorusData = {!! json_encode($measurements2->pluck('phosporus')) !!};
-        const potassiumData = {!! json_encode($measurements2->pluck('potassium')) !!};
-
-        const latestData = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
+    
+        // Assuming the data is already sorted in ascending order by timestamp
+        const data = {!! json_encode($measurements2 ?? []) !!};
+    
+        // Function to format timestamps
+        const formatTimestamp = (timestamp) => {
+            const date = new Date(timestamp);
+            return date.getDate() + '-' + (date.getMonth() + 1) + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
         };
-
-        const latestLabels = latestData(labels, 10);
-
-        const ph = {
-            label: 'pH',
-            data: latestData(phData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 206, 86, 1)', // Different color for pH
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            fill: true,
-        };
-
-        const moisture = {
-            label: 'Kelembaban',
-            data: latestData(moistureData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for humidity
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: true,
-        };
-
-        const nitrogen = {
-            label: 'Nitrogen',
-            data: latestData(nitrogenData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: true,
-        };
-
-        const phosporus = {
-            label: 'Fosfor',
-            data: latestData(phosphorusData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(153, 102, 255, 1)', // Different color for phosphorus
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            fill: true,
-        };
-
-        const potassium = {
-            label: 'Kalium',
-            data: latestData(potassiumData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 159, 64, 1)', // Different color for potassium
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            fill: true,
-        };
-
-
-        new Chart(phctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [ph],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
+    
+        // Extract latest 10 data points and format timestamps
+        const latestData = data.slice(-10);
+        const labels = latestData.map(item => formatTimestamp(item.TS));
+    
+        // Extract values for each parameter
+        const phData = latestData.map(item => item.ph);
+        const moistureData = latestData.map(item => item.kelembapan);
+        const nitrogenData = latestData.map(item => item.nitrogen);
+        const phosporusData = latestData.map(item => item.phosporus);
+        const potassiumData = latestData.map(item => item.kalium);
+    
+        // Function to create a chart
+        const createChart = (ctx, label, data, borderColor, backgroundColor) => {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        backgroundColor: backgroundColor,
+                        fill: true,
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
                     },
                 },
-            },
-        });
-
-        new Chart(moisturectx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [moisture],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(nitrogenctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [nitrogen],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(phosporusctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [phosporus],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(potassiumctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [potassium],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
+            });
+        };
+    
+        // Create charts
+        createChart(phctx, 'pH', phData, 'rgba(255, 206, 86, 1)', 'rgba(255, 206, 86, 0.2)');
+        createChart(moisturectx, 'Kelembaban', moistureData, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
+        createChart(nitrogenctx, 'Nitrogen', nitrogenData, 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)');
+        createChart(phosporusctx, 'Fosfor', phosporusData, 'rgba(153, 102, 255, 1)', 'rgba(153, 102, 255, 0.2)');
+        createChart(potassiumctx, 'Kalium', potassiumData, 'rgba(255, 159, 64, 1)', 'rgba(255, 159, 64, 0.2)');
     </script>
+    
+@endsection
 
 
     {{-- <label for="location">Select Location:</label>
@@ -363,4 +275,3 @@
             },
         });
     </script> --}}
-@endsection

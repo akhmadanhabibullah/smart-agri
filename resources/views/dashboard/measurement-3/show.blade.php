@@ -6,13 +6,13 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="post" action="/dashboard/measurement-3/{{ $measurement3->idMeasurement }}" class="mb-3"
+        <form method="post" action="/dashboard/measurement-3/{{ $measurement3->TS }}" class="mb-3"
             enctype="multipart/form-data">
             @method('put')
             @csrf
             <div class="mb-3">
                 <label for="distance" class="form-label">Jarak</label>
-                <input type="text" value="{{ $measurement3->distance }}"
+                <input type="text" value="{{ $measurement3->jarak }}"
                     class="form-control @error('distance') is-invalid @enderror" name="distance" id="distance"
                     disabled value="{{ old('distance') }}">
                 @error('distance')
@@ -23,7 +23,7 @@
             </div>
             <div class="mb-3">
                 <label for="flowRate" class="form-label">Laju Arus</label>
-                <input type="text" value="{{ $measurement3->flowRate }}" class="form-control @error('flowRate') is-invalid @enderror"
+                <input type="text" value="{{ $measurement3->{'flow rate'} }}" class="form-control @error('flowRate') is-invalid @enderror"
                     name="flowRate" id="flowRate" disabled value="{{ old('flowRate') }}">
                 @error('flowRate')
                     <div class="invalid-feedback">
@@ -33,7 +33,7 @@
             </div>
             <div class="mb-3">
                 <label for="rainFall" class="form-label">Curah Hujan</label>
-                <input type="text" value="{{ $measurement3->rainFall }}"
+                <input type="text" value="{{ $measurement3->{'curah hujan'} }}"
                     class="form-control @error('rainFall') is-invalid @enderror" name="rainFall" id="rainFall" disabled
                     value="{{ old('rainFall') }}">
                 @error('rainFall')
@@ -42,7 +42,7 @@
                     </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="idLocation" class="form-label">ID Lokasi</label>
                 <input type="text" value="{{ $measurement3->idLocation }}"
                     class="form-control @error('idLocation') is-invalid @enderror" name="idLocation" id="idLocation"
@@ -52,10 +52,10 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
-                <input type="text" value="{{ $location3->latitude }}"
+                <input type="text" value="{{ $measurement3->latitude }}"
                     class="form-control @error('latitude') is-invalid @enderror" name="latitude" id="latitude" disabled
                     value="{{ old('latitude') }}">
                 @error('latitude')
@@ -66,7 +66,7 @@
             </div>
             <div class="mb-3">
                 <label for="longitude" class="form-label">Garis Bujur (Longitude)</label>
-                <input type="text" value="{{ $location3->longitude }}"
+                <input type="text" value="{{ $measurement3->longitude }}"
                     class="form-control @error('longitude') is-invalid @enderror" name="longitude" id="longitude" disabled
                     value="{{ old('longitude') }}">
                 @error('longitude')
@@ -83,15 +83,15 @@
 
     <!-- Your JavaScript code for map display -->
     <script>
-        var map = L.map('map').setView([{{ $location3->latitude }}, {{ $location3->longitude }}], 12);
+        var map = L.map('map').setView([{{ $measurement3->latitude }}, {{ $measurement3->longitude }}], 12);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var marker = L.marker([{{ $location3->latitude }}, {{ $location3->longitude }}]).addTo(map);
-        marker.bindPopup("Location: {{ $location3->name }}");
+        var marker = L.marker([{{ $measurement3->latitude }}, {{ $measurement3->longitude }}]).addTo(map);
+        marker.bindPopup("Longitude: {{ $measurement3->longitude }}, Latidude: {{ $measurement3->latitude }},");
     </script>
 
 @endsection

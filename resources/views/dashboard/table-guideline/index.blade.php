@@ -69,18 +69,28 @@
             <tbody>
                     <tr>
                         <td>1</td>
-                        <td><= 20</td>
+                        <td>< 18 atau > 35</td>
                         <td>Buruk</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>21 - 25</td>
+                        <td>18 - 22 atau 32 - 25</td>
+                        <td>Sedang</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>22 - 24 atau 29 - 32</td>
                         <td>Baik</td>
                     </tr>
                     <tr>
-                        <td>1</td>
-                        <td>> 25</td>
+                        <td>4</td>
+                        <td>24 - 29</td>
                         <td>Sangat Baik</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Lainnya</td>
+                        <td>Di luar jangkauan</td>
                     </tr>
             </tbody>
         </table>
@@ -100,17 +110,17 @@
             <tbody>
                     <tr>
                         <td>1</td>
-                        <td>< 5</td>
-                        <td>Buruk</td>
+                        <td>< 5 atau > 7.9</td>
+                        <td>Sedang</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>5 - 5.5</td>
+                        <td>5 - 5.5 atau 7.5 - 7.9</td>
                         <td>Baik</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>5.6 - 7.5</td>
+                        <td>5.5 - 7.5</td>
                         <td>Sangat Baik</td>
                     </tr>
                     <tr>
@@ -136,8 +146,8 @@
             <tbody>
                     <tr>
                         <td>1</td>
-                        <td>< 30</td>
-                        <td>Buruk</td>
+                        <td>< 30 atau > 90</td>
+                        <td>Sedang</td>
                     </tr>
                     <tr>
                         <td>2</td>
@@ -146,7 +156,7 @@
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>> 33</td>
+                        <td>33 - 90</td>
                         <td>Sangat Baik</td>
                     </tr>
                     <tr>
@@ -329,28 +339,28 @@
                     <tr>
                         <td>1</td>
                         <td>Baik</td>
-                        <td>301 - 400 (Ketinggian 1)</td>
+                        <td>337.6 - 450 (Ketinggian 1 | Baik)</td>
                         <td>0 - 7.5 (Lambat)</td>
                         <td>0 - 100 (Rendah)</td>
                     </tr>
                     <tr>
                         <td>2</td>
                         <td>Sedang</td>
-                        <td>201 - 300 (Ketinggian 2)</td>
+                        <td>225.1 - 337.5 (Ketinggian 2 | Sedang)</td>
                         <td>7.6 - 15 (Sedang)</td>
                         <td>101 - 300 (Sedang)</td>
                     </tr>
                     <tr>
                         <td>3</td>
                         <td>Peringatan</td>
-                        <td>101 - 200 (Ketinggian 3)</td>
+                        <td>112.6 - 225 (Ketinggian 3 | Waspada)</td>
                         <td>15.1 - 22.5 (Cepat)</td>
                         <td>301 - 500 (Tinggi)</td>
                     </tr>
                     <tr>
                         <td>4</td>
                         <td>Berbahaya</td>
-                        <td>0 - 100 (Ketinggian 4)</td>
+                        <td>0 - 112.5 (Ketinggian 4 | Bahaya)</td>
                         <td>22.6 - 30 (Sangat Cepat)</td>
                         <td>> 500 (Sangat Tinggi)</td>
                     </tr>

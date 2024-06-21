@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Landing Page - Start Bootstrap Theme</title>
+        <title>Landing Page - Smart Agriculture</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -20,14 +20,15 @@
         @include('layouts.main')
         <!-- Masthead-->
         @foreach ($highlights as $highlight)
-        <header class="masthead" style="background-image: url('{{ asset('img/' . $highlight->image) }}');">
+        <header class="masthead" style="background-image: url('img/steven-weeks-DUPFowqI6oI-unsplash(1).jpg');">
             <div class="container position-relative">
                 <div class="row justify-content-center">
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
                             <h1 class="mb-5">
-                                    {{ $highlight->title }}
+                                    {{-- {{ $highlight->title }} --}}
+                                    Selamat datang di website Smart Agriculture
                             </h1>
                             <!-- Signup form-->
                             <!-- * * * * * * * * * * * * * * *-->
@@ -39,14 +40,14 @@
                             <!-- to get an API token!-->
                             <form class="form-subscribe" id="contactForm" data-sb-form-api-token="API_TOKEN">
                                 <!-- Email address input-->
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col">
                                         <input class="form-control form-control-lg" id="emailAddress" type="email" placeholder="Alamat email" data-sb-validations="required,email" />
                                         <div class="invalid-feedback text-white" data-sb-feedback="emailAddress:required">Alamat email wajib diisi</div>
                                         <div class="invalid-feedback text-white" data-sb-feedback="emailAddress:email">Alamat email tidak valid</div>
                                     </div>
                                     <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                                </div>
+                                </div> --}}
                                 <!-- Submit success message-->
                                 <!-- This is what your users will see when the form-->
                                 <!-- has successfully submitted-->
@@ -74,7 +75,7 @@
         <section class="features-icons bg-light text-center">
             <div class="container">
                 <div class="row">
-                    @foreach ($features as $feature)
+                    {{-- @foreach ($features as $feature)
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
@@ -82,21 +83,28 @@
                             <p class="lead mb-0">{{ $feature->description }}</p>
                         </div>
                     </div>
-                    @endforeach
-                    {{-- <div class="col-lg-4">
+                    @endforeach --}}
+                    <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-                            <h3>{{ $feature->title }}</h3>
-                            <p class="lead mb-0">{{ $feature->description }}</p>
+                            <h3>Fitur #1</h3>
+                            <p class="lead mb-0">Menampilkan hasil dari alat Smart Agriculture yang terdiri dari Tanah Pintar (Smart Soil) dan Air Pintar (Smart Irrigation)</p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-                            <h3>{{ $feature->title }}</h3>
-                            <p class="lead mb-0">{{ $feature->description }}</p>
+                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                            <h3>Fitur #2</h3>
+                            <p class="lead mb-0">Terdapat fitur pemetaan untuk mengetahui lokasi pengukuran alat Smart Agriculture dilakukan</p>
                         </div>
-                    </div> --}}
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                            <h3>Fitur #3</h3>
+                            <p class="lead mb-0">Terdapat visualisasi grafik mengenai hasil pengukuran terakhir</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -106,29 +114,36 @@
             <div class="container">
                 <h2 class="mb-5">Testimoni dari beberapa pengguna..</h2>
                 <div class="row">
-                    @foreach ($testimonials as $testimonial)
+                    {{-- @foreach ($testimonials as $testimonial) --}}
+                    {{-- <div class="col-lg-4">
+                        <i class="bi bi-person-circle m-auto text-primary" style="font-size: 90px;"></i>
+                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                            <h5>Fitur #1</h5>
+                            <p class="font-weight-light mb-0">Menampilkan hasil dari alat Smart Agriculture yang terdiri dari Tanah Pintar (Smart Soil) dan Air Pintar (Smart Irrigation)</p>
+                        </div>
+                    </div> --}}
+                    {{-- @endforeach --}}
                     <div class="col-lg-4">
                         <i class="bi bi-person-circle m-auto text-primary" style="font-size: 90px;"></i>
                         <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                            <h5>{{ $testimonial->name }}</h5>
-                            <p class="font-weight-light mb-0">{{ $testimonial->description }}</p>
-                        </div>
-                    </div>
-                    @endforeach
-                    {{-- <div class="col-lg-4">
-                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                            <img class="img-fluid rounded-circle mb-3" src="assets/img/testimonials-2.jpg" alt="..." />
-                            <h5>Fred S.</h5>
-                            <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                            <h5>Pengguna #1</h5>
+                            <p class="font-weight-light mb-0">Website berikut membantu proses pemetaan lahan untuk mengetahui lokasi dari pengukuran yang telah dilakukan pada alat Smart Agriculture</p>
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        <i class="bi bi-person-circle m-auto text-primary" style="font-size: 90px;"></i>
                         <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                            <img class="img-fluid rounded-circle mb-3" src="assets/img/testimonials-3.jpg" alt="..." />
-                            <h5>Sarah W.</h5>
-                            <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                            <h5>Pengguna #2</h5>
+                            <p class="font-weight-light mb-0">Website pemetaan dan kemudian menampilkan hasil pengukuran alat Smart Agriculture ini memiliki fitur yang responsif</p>
                         </div>
-                    </div> --}}
+                    </div>
+                    <div class="col-lg-4">
+                        <i class="bi bi-person-circle m-auto text-primary" style="font-size: 90px;"></i>
+                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                            <h5>Pengguna #3</h5>
+                            <p class="font-weight-light mb-0">Grafik dalam website pemetaan dan kemudian menampilkan hasil pengukuran alat Smart Agriculture ini memiliki visualisasi grafik masing-masing parameter pengukuran</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -146,7 +161,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
                         </ul> --}}
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Smart Agriculture 2024. All Rights Reserved.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">

@@ -19,14 +19,21 @@
 
 <body>
     <!-- Your Blade template for navigation bar -->
-    <nav class="navbar navbar-light bg-light static-top">
+    {{-- <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
-            <a class="navbar-brand" href="/">Start Bootstrap</a>
+            <a class="navbar-brand" href="/">Smart Agriculture</a>
             @auth
                 <a class="btn btn-primary" href="/dashboard">Dashboard</a>
             @else
                 <a class="btn btn-primary" href="/login">Masuk</a>
             @endauth
+        </div>
+    </nav> --}}
+    
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Smart Agriculture</a>
+            <a class="btn btn-primary" href="/dashboard">Dashboard</a>
         </div>
     </nav>
 

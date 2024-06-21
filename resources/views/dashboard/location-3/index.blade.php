@@ -64,36 +64,32 @@ color: #6c757d;
 @endif
 
 <div class="table-responsive col-lg-12">
-  <a href="/dashboard/location-3/create" class="btn btn-primary mb-3">Tambah Lokasi</a>
+  {{-- <a href="/dashboard/location-3/create" class="btn btn-primary mb-3">Tambah Lokasi</a> --}}
     <table class="table table-striped table-sm">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Nama</th>
-          <th scope="col">Alamat</th>
           <th scope="col">Garis Lintang (Latitude)</th>
           <th scope="col">Garis Bujur (Longitude)</th>
           <th scope="col">Aksi</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($locations3 as $location3)
+        @foreach ($datasmartirrigation as $location3)
         <tr>
             <td>{{ $loop->iteration }}</td>
-            <td>{{ $location3->name }}</td>
-            <td>{{ $location3->address }}</td>
             <td>{{ $location3->latitude }}</td>
             <td>{{ $location3->longitude }}</td>
             <td>
-                <a href="/dashboard/location-3/{{ $location3->idLocation }}" class="badge bg-info"><span data-feather="eye"></span></a>
-                <a href="/dashboard/location-3/{{ $location3->idLocation }}/edit" class="badge bg-warning"><span data-feather="edit"></span></a>
+                <a href="/dashboard/location-3/{{ $location3->TS }}" class="badge bg-info"><span data-feather="eye"></span></a>
+                {{-- <a href="/dashboard/location-3/{{ $location3->idLocation }}/edit" class="badge bg-warning"><span data-feather="edit"></span></a>
 
                 <form action="/dashboard/location-3/{{ $location3->idLocation }}" method="post" class="d-inline">
                   @method('delete')
                   @csrf
                   <button class="badge bg-danger border-0" onclick="return confirm('Anda yakin akan menghapus data lokasi ini?')">
                     <span data-feather="x-circle"></span></button>
-                </form>
+                </form> --}}
             </td>
         </tr>
         @endforeach

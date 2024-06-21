@@ -62,15 +62,15 @@
     @endif
 
     <div class="table-responsive col-lg-12">
-        <a href="/dashboard/measurement-3/create" class="btn btn-primary mb-3">Tambah Pengukuran</a>
+        {{-- <a href="/dashboard/measurement-3/create" class="btn btn-primary mb-3">Tambah Pengukuran</a> --}}
         <table class="table table-striped table-sm align-middle">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Jarak</th>
-                    <th scope="col">Laju Arus</th>
-                    <th scope="col">Curah Hujan</th>
-                    <th scope="col">ID Lokasi</th>
+                    <th scope="col">ID Ukur</th>
+                    <th scope="col">Jarak (cm)</th>
+                    <th scope="col">Laju Arus (L/minute)</th>
+                    <th scope="col">Curah Hujan (mm)</th>
                     <th scope="col">Garis Lintang (Latitude)</th>
                     <th scope="col">Garis Bujur (Longitude)</th>
                     <th scope="col">Tanggal</th>
@@ -78,20 +78,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($measurements3 as $measurement3)
+                @foreach ($datasmartirrigation as $measurement3)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $measurement3->distance }}</td>
-                        <td>{{ $measurement3->flowRate }}</td>
-                        <td>{{ $measurement3->rainFall }}%</td>
-                        <td>{{ $measurement3->idLocation }}</td>
+                        <td>{{ $measurement3->TS }}</td>
+                        <td>{{ $measurement3->jarak }}</td>
+                        <td>{{ $measurement3->{'flow rate'} }}</td>
+                        <td>{{ $measurement3->{'curah hujan'} }}</td>
                         <td>{{ $measurement3->latitude }}</td>
                         <td>{{ $measurement3->longitude }}</td>
-                        <td>{{ $measurement3->updated_at }}</td>
+                        <td>{{ $measurement3->TimeStamp }}</td>
                         <td>
-                            <a href="/dashboard/measurement-3/{{ $measurement3->idMeasurement }}" class="badge bg-info"><span
+                            <a href="/dashboard/measurement-3/{{ $measurement3->TS }}" class="badge bg-info"><span
                                     data-feather="eye"></span></a>
-                            <a href="/dashboard/measurement-3/{{ $measurement3->idMeasurement }}/edit"
+                            {{-- <a href="/dashboard/measurement-3/{{ $measurement3->idMeasurement }}/edit"
                                 class="badge bg-warning"><span data-feather="edit"></span></a>
 
                             <form action="/dashboard/measurement-3/{{ $measurement3->idMeasurement }}" method="post"
@@ -101,7 +101,7 @@
                                 <button class="badge bg-danger border-0"
                                     onclick="return confirm('Anda yakin akan menghapus data pengukuran ini?')">
                                     <span data-feather="x-circle"></span></button>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

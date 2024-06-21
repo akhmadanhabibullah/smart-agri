@@ -10,6 +10,7 @@ class Measurement extends Model
 {
     use HasFactory;
 
+    protected $table = 'measurements';
     protected $guarded = ['idMeasurement'];
 
     protected $primaryKey = 'idMeasurement'; // ??

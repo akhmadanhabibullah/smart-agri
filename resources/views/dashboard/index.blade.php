@@ -4,7 +4,7 @@
     {{-- leaflet full here --}}
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 border-bottom">
-        <h1 class="h2">Selamat datang, {{ auth()->user()->name }}</h1>
+        <h1 class="h2">Selamat datang, Admin</h1>
     </div>
 
     <div class="container-fluid py-2 px-0 mb-3 border-bottom">
@@ -79,251 +79,222 @@
         <canvas id="thirdChart" style="width: 100px; height: 33px;" class="mb-3"></canvas>
     </div>
 
-    <script>
-        const ctx = document.getElementById('firstChart');
-        const ctx2 = document.getElementById('secondChart');
-        const ctx3 = document.getElementById('thirdChart');
+ 
 
-        const labels = {!! json_encode(
-            $measurements->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
+<script>
+    const ctx = document.getElementById('firstChart');
+    const ctx2 = document.getElementById('secondChart');
+    const ctx3 = document.getElementById('thirdChart');
 
-        const labels2 = {!! json_encode(
-            $measurements2->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
+    const data1 = {!! json_encode($datasmartsoil1 ?? []) !!};
+    const data2 = {!! json_encode($datasmartsoil2 ?? []) !!};
+    const data3 = {!! json_encode($datasmartirrigation ?? []) !!};
 
-        const labels3 = {!! json_encode(
-            $measurements3->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
+    const formatTimestamp1 = (timestamp1) => {
+        const date1 = new Date(timestamp1);
+        return `${date1.getDate()}-${date1.getMonth() + 1} ${date1.getHours()}:${date1.getMinutes()}:${date1.getSeconds()}`;
+    };
+    const formatTimestamp2 = (timestamp2) => {
+        const date2 = new Date(timestamp2);
+        return `${date2.getDate()}-${date2.getMonth() + 1} ${date2.getHours()}:${date2.getMinutes()}:${date2.getSeconds()}`;
+    };
+    const formatTimestamp3 = (timestamp3) => {
+        const date3 = new Date(timestamp3);
+        return `${date3.getDate()}-${date3.getMonth() + 1} ${date3.getHours()}:${date3.getMinutes()}:${date3.getSeconds()}`;
+    };
 
-        const temperatureData = {!! json_encode($measurements->pluck('temperature')) !!};
-        const phData = {!! json_encode($measurements->pluck('ph')) !!};
-        const moistureData = {!! json_encode($measurements->pluck('moisture')) !!};
-        const nitrogenData = {!! json_encode($measurements->pluck('nitrogen')) !!};
-        const phosphorusData = {!! json_encode($measurements->pluck('phosporus')) !!};
-        const potassiumData = {!! json_encode($measurements->pluck('potassium')) !!};
-        const ecData = {!! json_encode($measurements->pluck('ec')) !!};
+    const latestData1 = data1.slice(-10);
+    const labels1 = latestData1.map(item => formatTimestamp1(item.TS));
+    const latestData2 = data2.slice(-10);
+    const labels2 = latestData2.map(item => formatTimestamp2(item.TS));
+    const latestData3 = data3.slice(-10);
+    const labels3 = latestData3.map(item => formatTimestamp3(item.TS));
 
-        const phData2 = {!! json_encode($measurements2->pluck('ph')) !!};
-        const moistureData2 = {!! json_encode($measurements2->pluck('moisture')) !!};
-        const nitrogenData2 = {!! json_encode($measurements2->pluck('nitrogen')) !!};
-        const phosphorusData2 = {!! json_encode($measurements2->pluck('phosporus')) !!};
-        const potassiumData2 = {!! json_encode($measurements2->pluck('potassium')) !!};
+    const temperatureData1 = latestData1.map(item => item.temperature);
+    const phData1 = latestData1.map(item => item.ph);
+    const moistureData1 = latestData1.map(item => item.moisture);
+    const nitrogenData1 = latestData1.map(item => item.nitrogen);
+    const phosporusData1 = latestData1.map(item => item.fosfor);
+    const potassiumData1 = latestData1.map(item => item.kalium);
+    const ecData1 = latestData1.map(item => item.conductivity);
 
-        const distanceData = {!! json_encode($measurements3->pluck('distance')) !!};
-        const flowRateData = {!! json_encode($measurements3->pluck('flowRate')) !!};
-        const rainFallData = {!! json_encode($measurements3->pluck('rainFall')) !!};
+    const phData2 = latestData2.map(item => item.ph);
+    const moistureData2 = latestData2.map(item => item.kelembapan);
+    const nitrogenData2 = latestData2.map(item => item.nitrogen);
+    const phosporusData2 = latestData2.map(item => item.phosporus);
+    const potassiumData2 = latestData2.map(item => item.kalium);
 
-        const latestData = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
-        };
+    const distanceData = latestData3.map(item => item.jarak);
+    const flowRateData = latestData3.map(item => item['flow rate']);
+    const rainFallData = latestData3.map(item => item['curah hujan']);
 
-        const latestData2 = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
-        };
-
-        const latestData3 = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
-        };
-
-        const latestLabels = latestData(labels, 10);
-        const latestLabels2 = latestData2(labels2, 10);
-        const latestLabels3 = latestData3(labels3, 10);
-
-        const temperature = {
-            label: 'Suhu',
-            data: latestData(temperatureData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: false,
-        };
-
-        const ph = {
-            label: 'pH',
-            data: latestData(phData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 206, 86, 1)', // Different color for pH
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            fill: false,
-        };
-
-        const moisture = {
-            label: 'Kelembaban',
-            data: latestData(moistureData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for humidity
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: false,
-        };
-
-        const nitrogen = {
-            label: 'Nitrogen',
-            data: latestData(nitrogenData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: false,
-        };
-
-        const phosporus = {
-            label: 'Fosfor',
-            data: latestData(phosphorusData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(153, 102, 255, 1)', // Different color for phosphorus
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            fill: false,
-        };
-
-        const potassium = {
-            label: 'Kalium',
-            data: latestData(potassiumData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 159, 64, 1)', // Different color for potassium
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            fill: false,
-        };
-
-        const ec = {
-            label: 'Konduktivitas Listrik',
-            data: latestData(ecData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(128, 123, 128, 1)',
-            backgroundColor: 'rgba(128, 128, 128, 0.2)',
-            fill: false,
-        };
-
-        const ph2 = {
-            label: 'pH',
-            data: latestData2(phData2, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 206, 86, 1)', // Different color for pH
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            fill: false,
-        };
-
-        const moisture2 = {
-            label: 'Kelembaban',
-            data: latestData2(moistureData2, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for humidity
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: false,
-        };
-
-        const nitrogen2 = {
-            label: 'Nitrogen',
-            data: latestData2(nitrogenData2, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: false,
-        };
-
-        const phosporus2 = {
-            label: 'Fosfor',
-            data: latestData2(phosphorusData2, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(153, 102, 255, 1)', // Different color for phosphorus
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            fill: false,
-        };
-
-        const potassium2 = {
-            label: 'Kalium',
-            data: latestData2(potassiumData2, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 159, 64, 1)', // Different color for potassium
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            fill: false,
-        };
-
-        const distance = {
-            label: 'Jarak',
-            data: latestData3(distanceData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 206, 86, 1)', // Different color for potassium
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            fill: false,
-        };
-
-        const flowRate = {
-            label: 'Laju Arus',
-            data: latestData3(flowRateData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for potassium
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: false,
-        };
-
-        const rainFall = {
-            label: 'Curah Hujan',
-            data: latestData3(rainFallData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)', // Different color for potassium
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: false,
-        };
-
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [temperature, ph, moisture, nitrogen, phosporus, potassium, ec],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels1,
+            datasets: [
+                {
+                    label: 'Suhu',
+                    data: temperatureData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'pH',
+                    data: phData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Kelembaban',
+                    data: moistureData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Nitrogen',
+                    data: nitrogenData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Fosfor',
+                    data: phosporusData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Kalium',
+                    data: potassiumData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Konduktivitas Listrik',
+                    data: ecData1,
+                    borderWidth: 1,
+                    borderColor: 'rgba(128, 128, 128, 1)',
+                    backgroundColor: 'rgba(128, 128, 128, 0.2)',
+                    fill: false,
+                }
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
                 },
             },
-        });
+        },
+    });
 
-        new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: latestLabels2,
-                datasets: [ph2, moisture2, nitrogen2, phosporus2, potassium2],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: labels2,
+            datasets: [
+                {
+                    label: 'pH',
+                    data: phData2,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Kelembaban',
+                    data: moistureData2,
+                    borderWidth: 1,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Nitrogen',
+                    data: nitrogenData2,
+                    borderWidth: 1,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Fosfor',
+                    data: phosporusData2,
+                    borderWidth: 1,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Kalium',
+                    data: potassiumData2,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    fill: false,
+                }
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
                 },
             },
-        });
+        },
+    });
 
-        new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: latestLabels3,
-                datasets: [distance, flowRate, rainFall],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
+    new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: labels3,
+            datasets: [
+                {
+                    label: 'Jarak',
+                    data: distanceData,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Laju Arus',
+                    data: flowRateData,
+                    borderWidth: 1,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: false,
+                },
+                {
+                    label: 'Curah Hujan',
+                    data: rainFallData,
+                    borderWidth: 1,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                }
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
                 },
             },
-        });
-    </script>
+        },
+    });
+
+</script>
 @endsection

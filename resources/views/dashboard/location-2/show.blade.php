@@ -6,32 +6,10 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="post" action="/dashboard/location-2/{{ $location2->idLocation }}" class="mb-3"
+        <form method="post" action="/dashboard/location-2/{{ $location2->TS }}" class="mb-3"
             enctype="multipart/form-data">
             @method('put')
             @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">Nama</label>
-                <input type="text" value="{{ $location2->name }}"
-                    class="form-control @error('name') is-invalid @enderror" name="name" id="name" required disabled
-                    value="{{ old('name') }}">
-                @error('name')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Alamat</label>
-                <input type="text" value="{{ $location2->address }}"
-                    class="form-control @error('address') is-invalid @enderror" address="address" id="address" required
-                    disabled value="{{ old('address') }}">
-                @error('address')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
                 <input type="text" value="{{ $location2->latitude }}"
@@ -83,9 +61,8 @@
 
         L.marker([latitude.value, longitude.value])
             .bindPopup(
-                "<div class='my-1'><strong>Name:</strong> <br>{{ $location2->name }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location2->latitude }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location2->longitude }}</div>"
+                "<div class='my-1'><strong>Longitude:</strong> <br>{{ $location2->longitude }}</div>" +
+                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location2->latitude }}</div>"
             ).addTo(map);
     </script>
 @endsection

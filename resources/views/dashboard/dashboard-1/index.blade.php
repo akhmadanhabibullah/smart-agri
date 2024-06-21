@@ -4,7 +4,7 @@
     {{-- leaflet full here --}}
 
     <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 border-bottom">
-        <h1 class="h2">Selamat datang di Dashboard Tanah Pintar #1, {{ auth()->user()->name }}</h1>
+        <h1 class="h2">Selamat datang di Dashboard Tanah Pintar #1, Admin</h1>
         <h1 class="h6 fw-lighter">
             Alat tanah pintar untuk menghitung tujuh parameter yaitu suhu, ph, kelembaban, nitrogen, fosfor, kalium, dan konduktivitas listrik yang memengaruhi proses proses pertanian
             </h1>
@@ -120,7 +120,7 @@
         </div>
     </div>
 
-    <div class="accordion border-bottom py-3" id="accordionExample">
+    {{-- <div class="accordion border-bottom py-3" id="accordionExample">
         <h1 class="h5">Rekomendasi</h1>
         <h1 class="h6 fw-lighter">
             rekomendasi secara keseluruhan berdasarkan pengukuran terakhir dari semua parameter</h1>
@@ -152,7 +152,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="container-fluid mt-2 py-2 px-0">
         <h1 class="h5">Grafik Data Pengukuran Tani Pintar #1</h1>
@@ -212,196 +212,60 @@
         const potassiumctx = document.getElementById('potassiumChart');
         const ecctx = document.getElementById('ecChart');
 
-        const labels = {!! json_encode(
-            $measurements->pluck('created_at')->map(function ($date) {
-                return \Carbon\Carbon::parse($date)->format('d-m H:i:s');
-            }),
-        ) !!};
+        // Assuming the data is already sorted in ascending order by timestamp
+        const data = {!! json_encode($datasmartsoil1 ?? []) !!};
 
-        const temperatureData = {!! json_encode($measurements->pluck('temperature')) !!};
-        const phData = {!! json_encode($measurements->pluck('ph')) !!};
-        const moistureData = {!! json_encode($measurements->pluck('moisture')) !!};
-        const nitrogenData = {!! json_encode($measurements->pluck('nitrogen')) !!};
-        const phosphorusData = {!! json_encode($measurements->pluck('phosporus')) !!};
-        const potassiumData = {!! json_encode($measurements->pluck('potassium')) !!};
-        const ecData = {!! json_encode($measurements->pluck('ec')) !!};
-
-        const latestData = (data, limit) => {
-            if (data.length > limit) {
-                return data.slice(-limit);
-            }
-            return data;
+        // Function to format timestamps
+        const formatTimestamp = (timestamp) => {
+            const date = new Date(timestamp);
+            return `${date.getDate()}-${date.getMonth() + 1} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
         };
 
-        const latestLabels = latestData(labels, 10);
+        // Extract latest 10 data points and format timestamps
+        const latestData = data.slice(-10);
+        const labels = latestData.map(item => formatTimestamp(item.TS));
 
-        const temperature = {
-            label: 'Suhu',
-            data: latestData(temperatureData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: true,
-        };
+        // Extract values for each parameter
+        const temperatureData = latestData.map(item => item.temperature);
+        const phData = latestData.map(item => item.ph);
+        const moistureData = latestData.map(item => item.moisture);
+        const nitrogenData = latestData.map(item => item.nitrogen);
+        const phosporusData = latestData.map(item => item.fosfor);
+        const potassiumData = latestData.map(item => item.kalium);
+        const ecData = latestData.map(item => item.conductivity);
 
-        const ph = {
-            label: 'pH',
-            data: latestData(phData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 206, 86, 1)', // Different color for pH
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            fill: true,
-        };
-
-        const moisture = {
-            label: 'Kelembaban',
-            data: latestData(moistureData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(75, 192, 192, 1)', // Different color for humidity
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: true,
-        };
-
-        const nitrogen = {
-            label: 'Nitrogen',
-            data: latestData(nitrogenData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: true,
-        };
-
-        const phosporus = {
-            label: 'Fosfor',
-            data: latestData(phosphorusData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(153, 102, 255, 1)', // Different color for phosphorus
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            fill: true,
-        };
-
-        const potassium = {
-            label: 'Kalium',
-            data: latestData(potassiumData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(255, 159, 64, 1)', // Different color for potassium
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            fill: true,
-        };
-
-        const ec = {
-            label: 'Konduktivitas Listrik',
-            data: latestData(ecData, 10),
-            borderWidth: 1,
-            borderColor: 'rgba(128, 123, 128, 1)',
-            backgroundColor: 'rgba(128, 128, 128, 0.2)',
-            fill: true,
-        };
-
-        new Chart(tempctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [temperature],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
+        const createChart = (ctx, label, data, borderColor, backgroundColor) => {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        backgroundColor: backgroundColor,
+                        fill: true,
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
                     },
                 },
-            },
-        });
+            });
+        };
 
-        new Chart(phctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [ph],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(moisturectx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [moisture],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(nitrogenctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [nitrogen],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(phosporusctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [phosporus],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(potassiumctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [potassium],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        new Chart(ecctx, {
-            type: 'line',
-            data: {
-                labels: latestLabels,
-                datasets: [ec],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
+        // Create charts
+        createChart(tempctx, 'Suhu', temperatureData, 'rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 0.2)');
+        createChart(phctx, 'pH', phData, 'rgba(255, 206, 86, 1)', 'rgba(255, 206, 86, 0.2)');
+        createChart(moisturectx, 'Kelembaban', moistureData, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)');
+        createChart(nitrogenctx, 'Nitrogen', nitrogenData, 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)');
+        createChart(phosporusctx, 'Fosfor', phosporusData, 'rgba(153, 102, 255, 1)', 'rgba(153, 102, 255, 0.2)');
+        createChart(potassiumctx, 'Kalium', potassiumData, 'rgba(255, 159, 64, 1)', 'rgba(255, 159, 64, 0.2)');
+        createChart(ecctx, 'Konduktivitas Listrik', ecData, 'rgba(128, 123, 128, 1)', 'rgba(128, 128, 128, 0.2)');
     </script>
 
 

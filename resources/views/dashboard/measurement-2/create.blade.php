@@ -19,10 +19,10 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="moisture" class="form-label">Kelembaban</label>
-                <input type="text" class="form-control @error('moisture') is-invalid @enderror" name="moisture"
-                    id="moisture" required value="{{ old('moisture') }}">
-                @error('moisture')
+                <label for="kelembapan" class="form-label">Kelembaban</label>
+                <input type="text" class="form-control @error('kelembapan') is-invalid @enderror" name="kelembapan"
+                    id="kelembapan" required value="{{ old('kelembapan') }}">
+                @error('kelembapan')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -49,16 +49,16 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="potassium" class="form-label">Kalium</label>
-                <input type="text" class="form-control @error('potassium') is-invalid @enderror" name="potassium"
-                    id="potassium" required value="{{ old('potassium') }}">
-                @error('potassium')
+                <label for="kalium" class="form-label">Kalium</label>
+                <input type="text" class="form-control @error('kalium') is-invalid @enderror" name="kalium"
+                    id="kalium" required value="{{ old('kalium') }}">
+                @error('kalium')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="location" class="form-label">ID Lokasi</label>
                 <select class="form-select" name="idLocation" id="idLocation">
                     @foreach ($locations2 as $location2)
@@ -69,10 +69,10 @@
                         @endif
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
-                <input type="text" value="{{ old('latitude', $location2->latitude) }}"
+                <input type="text" value="{{ old('latitude') }}"
                     class="form-control @error('latitude') is-invalid @enderror" name="latitude" id="latitude" required>
                 @error('latitude')
                     <div class="invalid-feedback">
@@ -82,7 +82,7 @@
             </div>
             <div class="mb-3">
                 <label for="longitude" class="form-label">Garis Bujur (Longitude)</label>
-                <input type="text" value="{{ old('longitude', $location2->longitude) }}"
+                <input type="text" value="{{ old('longitude') }}"
                     class="form-control @error('longitude') is-invalid @enderror" name="longitude" id="longitude" required>
                 @error('longitude')
                     <div class="invalid-feedback">

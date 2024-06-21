@@ -40,6 +40,31 @@ Route::post('/logout', [LoginController::class, 'logout']);
 //     return view('dashboard.index');
 // })->middleware('auth');
 
+// Route::prefix('/dashboard')->group(function () {
+//     Route::get('/', function () {
+//         return view('dashboard.index');
+//     })->name('dashboard')->middleware('auth');
+//     Route::get('/getLocationDetails/{idLocation}', [DashboardMeasurementController::class, 'getLocationDetails']);
+//     Route::get('/getLocationDetails/{idLocation}', [Dashboard2MeasurementController::class, 'getLocationDetails']);
+//     Route::get('/getLocationDetails/{idLocation}', [Dashboard3MeasurementController::class, 'getLocationDetails']);
+//     Route::resource('/measurement', DashboardMeasurementController::class)->middleware('admin');
+//     Route::resource('/location', DashboardLocationController::class)->middleware('admin');
+//     Route::resource('/feature', DashboardFeatureController::class)->middleware('admin');
+//     Route::resource('/testimonial', DashboardTestimonialController::class)->middleware('admin');
+//     Route::resource('/map', DashboardMapController::class)->middleware('auth');
+//     Route::resource('/highlight', DashboardHighlightController::class)->middleware('admin');
+//     Route::resource('', DashboardController::class)->middleware('auth');
+//     Route::resource('/dashboard-1', Dashboard1Controller::class)->middleware('auth');
+//     Route::resource('/dashboard-2', Dashboard2Controller::class)->middleware('auth');
+//     Route::resource('/measurement-2', Dashboard2MeasurementController::class)->middleware('admin');
+//     Route::resource('/measurement-3', Dashboard3MeasurementController::class)->middleware('admin');
+//     Route::resource('/location-2', Dashboard2LocationController::class)->middleware('admin');
+//     Route::resource('/location-3', Dashboard3LocationController::class)->middleware('admin');
+//     Route::resource('/dashboard-3', Dashboard3Controller::class)->middleware('admin');
+//     Route::resource('/table-guideline', TableGuidelineController::class)->middleware('admin');
+    
+// });
+
 Route::prefix('/dashboard')->group(function () {
     Route::get('/', function () {
         return view('dashboard.index');
@@ -47,19 +72,20 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/getLocationDetails/{idLocation}', [DashboardMeasurementController::class, 'getLocationDetails']);
     Route::get('/getLocationDetails/{idLocation}', [Dashboard2MeasurementController::class, 'getLocationDetails']);
     Route::get('/getLocationDetails/{idLocation}', [Dashboard3MeasurementController::class, 'getLocationDetails']);
-    Route::resource('/measurement', DashboardMeasurementController::class)->middleware('admin');
-    Route::resource('/location', DashboardLocationController::class)->middleware('admin');
-    Route::resource('/feature', DashboardFeatureController::class)->middleware('admin');
-    Route::resource('/testimonial', DashboardTestimonialController::class)->middleware('admin');
-    Route::resource('/map', DashboardMapController::class)->middleware('auth');
-    Route::resource('/highlight', DashboardHighlightController::class)->middleware('admin');
-    Route::resource('', DashboardController::class)->middleware('auth');
-    Route::resource('/dashboard-1', Dashboard1Controller::class)->middleware('auth');
-    Route::resource('/dashboard-2', Dashboard2Controller::class)->middleware('auth');
-    Route::resource('/measurement-2', Dashboard2MeasurementController::class)->middleware('admin');
-    Route::resource('/measurement-3', Dashboard3MeasurementController::class)->middleware('admin');
-    Route::resource('/location-2', Dashboard2LocationController::class)->middleware('admin');
-    Route::resource('/location-3', Dashboard3LocationController::class)->middleware('admin');
-    Route::resource('/dashboard-3', Dashboard3Controller::class)->middleware('admin');
-    Route::resource('/table-guideline', TableGuidelineController::class)->middleware('admin');
+    Route::resource('/measurement', DashboardMeasurementController::class)->middleware('guest');
+    Route::resource('/location', DashboardLocationController::class)->middleware('guest');
+    Route::resource('/feature', DashboardFeatureController::class)->middleware('guest');
+    Route::resource('/testimonial', DashboardTestimonialController::class)->middleware('guest');
+    Route::resource('/map', DashboardMapController::class)->middleware('guest');
+    Route::resource('/highlight', DashboardHighlightController::class)->middleware('guest');
+    Route::resource('', DashboardController::class)->middleware('guest');
+    Route::resource('/dashboard-1', Dashboard1Controller::class)->middleware('guest');
+    Route::resource('/dashboard-2', Dashboard2Controller::class)->middleware('guest');
+    Route::resource('/measurement-2', Dashboard2MeasurementController::class)->middleware('guest');
+    Route::resource('/measurement-3', Dashboard3MeasurementController::class)->middleware('guest');
+    Route::resource('/location-2', Dashboard2LocationController::class)->middleware('guest');
+    Route::resource('/location-3', Dashboard3LocationController::class)->middleware('guest');
+    Route::resource('/dashboard-3', Dashboard3Controller::class)->middleware('guest');
+    Route::resource('/table-guideline', TableGuidelineController::class)->middleware('guest');
+    
 });

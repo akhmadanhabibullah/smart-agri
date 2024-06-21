@@ -6,7 +6,7 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="post" action="/dashboard/measurement/{{ $measurement->idMeasurement }}" class="mb-3"
+        <form method="post" action="/dashboard/measurement/{{ $measurement->TS }}" class="mb-3"
             enctype="multipart/form-data">
             @method('put')
             @csrf
@@ -54,39 +54,39 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="phosporus" class="form-label">Fosfor</label>
-                <input type="text" value="{{ $measurement->phosporus }}"
-                    class="form-control @error('phosporus') is-invalid @enderror" name="phosporus" id="phosporus" disabled
-                    value="{{ old('phosporus') }}">
-                @error('phosporus')
+                <label for="fosfor" class="form-label">Fosfor</label>
+                <input type="text" value="{{ $measurement->fosfor }}"
+                    class="form-control @error('fosfor') is-invalid @enderror" name="fosfor" id="fosfor" disabled
+                    value="{{ old('fosfor') }}">
+                @error('fosfor')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="potassium" class="form-label">Kalium</label>
-                <input type="text" value="{{ $measurement->potassium }}"
-                    class="form-control @error('potassium') is-invalid @enderror" name="potassium" id="potassium" disabled
-                    value="{{ old('potassium') }}">
-                @error('potassium')
+                <label for="kalium" class="form-label">Kalium</label>
+                <input type="text" value="{{ $measurement->kalium }}"
+                    class="form-control @error('kalium') is-invalid @enderror" name="kalium" id="kalium" disabled
+                    value="{{ old('kalium') }}">
+                @error('kalium')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="ec" class="form-label">Konduktivitas Listrik</label>
-                <input type="text" value="{{ $measurement->ec }}" class="form-control @error('ec') is-invalid @enderror"
-                    name="ec" id="ec" disabled value="{{ old('ec') }}">
-                @error('ec')
+                <label for="conductivity" class="form-label">Konduktivitas Listrik</label>
+                <input type="text" value="{{ $measurement->conductivity }}" class="form-control @error('conductivity') is-invalid @enderror"
+                    name="conductivity" id="conductivity" disabled value="{{ old('conductivity') }}">
+                @error('conductivity')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="location" class="form-label">ID Lokasi</label>
                 <select class="form-select" name="idLocation" id="idLocation" disabled>
                     @foreach ($locations as $location)
@@ -97,11 +97,11 @@
                         @endif
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
-                <input type="text" value="{{ $measurement->location->latitude }}"
+                <input type="text" value="{{ $measurement->latitude }}"
                     class="form-control @error('latitude') is-invalid @enderror" name="latitude" id="latitude" disabled>
                 @error('latitude')
                     <div class="invalid-feedback">
@@ -112,7 +112,7 @@
 
             <div class="mb-3">
                 <label for="longitude" class="form-label">Garis Bujur (Longitude)</label>
-                <input type="text" value="{{ $measurement->location->longitude }}"
+                <input type="text" value="{{ $measurement->longitude }}"
                     class="form-control @error('longitude') is-invalid @enderror" name="longitude" id="longitude"
                     disabled>
                 @error('longitude')
@@ -121,7 +121,7 @@
                     </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="altitude" class="form-label">Ketinggian (Altitude)</label>
                 <input type="text" value="{{ $measurement->location->altitude }}"
                     class="form-control @error('altitude') is-invalid @enderror" name="altitude" id="altitude"
@@ -131,7 +131,7 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
 
             <label for="map" class="form-label">Lihat Peta</label>
             <div id="map"></div>
@@ -143,16 +143,16 @@
     <script>
         const latitude = document.querySelector("#latitude");
         const longitude = document.querySelector("#longitude");
-        const altitude = document.querySelector("#altitude");
+        // const altitude = document.querySelector("#altitude");
 
-        var map = L.map('map').setView([latitude.value, longitude.value, altitude.value], 12);
+        var map = L.map('map').setView([latitude.value, longitude.value], 12);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var curLocation = [latitude.value, longitude.value, altitude.value];
+        var curLocation = [latitude.value, longitude.value];
         map.attributionControl.setPrefix(false);
 
         var marker = new L.marker(curLocation, {
@@ -160,12 +160,10 @@
         });
         map.addLayer(marker);
 
-        L.marker([latitude.value, longitude.value, altitude.value])
+        L.marker([latitude.value, longitude.value])
             .bindPopup(
-                "<div class='my-1'><strong>Name:</strong> <br>{{ $location->name }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location->latitude }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location->latitude }}</div>" +
-                "<div class='my-1'><strong>Altitude:</strong> <br>{{ $location->altitude }}</div>"
+                "<div class='my-1'><strong>Longitude:</strong> <br>{{ $measurement->longitude }}</div>" +
+                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $measurement->latitude }}</div>" 
             ).addTo(map);
     </script>
 @endsection

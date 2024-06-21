@@ -62,17 +62,17 @@
     @endif
 
     <div class="table-responsive col-lg-12">
-        <a href="/dashboard/measurement-2/create" class="btn btn-primary mb-3">Tambah Pengukuran</a>
+        {{-- <a href="/dashboard/measurement-2/create" class="btn btn-primary mb-3">Tambah Pengukuran</a> --}}
         <table class="table table-striped table-sm align-middle">
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">ID Ukur</th>
                     <th scope="col">pH</th>
                     <th scope="col">Kelembaban</th>
-                    <th scope="col">Nitrogen</th>
-                    <th scope="col">Fosfor</th>
-                    <th scope="col">Kalium</th>
-                    <th scope="col">ID Lokasi</th>
+                    <th scope="col">Nitrogen (%)</th>
+                    <th scope="col">Fosfor (%)</th>
+                    <th scope="col">Kalium (Me/100 gr)</th>
                     <th scope="col">Garis Lintang (Latitude)</th>
                     <th scope="col">Garis Bujur (Longitude)</th>
                     <th scope="col">Tanggal</th>
@@ -80,32 +80,32 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($measurements2 as $measurement2)
+                @foreach ($datasmartsoil2 as $measurement2)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>{{ $measurement2->TS }}</td>
                         <td>{{ $measurement2->ph }}</td>
-                        <td>{{ $measurement2->moisture }}%</td>
+                        <td>{{ $measurement2->kelembapan }}%</td>
                         <td>{{ $measurement2->nitrogen }}</td>
                         <td>{{ $measurement2->phosporus }}</td>
-                        <td>{{ $measurement2->potassium }}</td>
-                        <td>{{ $measurement2->idLocation }}</td>
+                        <td>{{ $measurement2->kalium }}</td>
                         <td>{{ $measurement2->latitude }}</td>
                         <td>{{ $measurement2->longitude }}</td>
-                        <td>{{ $measurement2->updated_at }}</td>
+                        <td>{{ $measurement2->TimeStamp }}</td>
                         <td>
-                            <a href="/dashboard/measurement-2/{{ $measurement2->idMeasurement }}" class="badge bg-info"><span
+                            <a href="/dashboard/measurement-2/{{ $measurement2->TS }}" class="badge bg-info"><span
                                     data-feather="eye"></span></a>
-                            <a href="/dashboard/measurement-2/{{ $measurement2->idMeasurement }}/edit"
+                            {{-- <a href="/dashboard/measurement-2/{{ $measurement2->TS }}/edit"
                                 class="badge bg-warning"><span data-feather="edit"></span></a>
 
-                            <form action="/dashboard/measurement-2/{{ $measurement2->idMeasurement }}" method="post"
+                            <form action="/dashboard/measurement-2/{{ $measurement2->TS }}" method="post"
                                 class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <button class="badge bg-danger border-0"
                                     onclick="return confirm('Anda yakin akan menghapus data pengukuran ini?')">
                                     <span data-feather="x-circle"></span></button>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

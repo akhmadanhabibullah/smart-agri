@@ -10,6 +10,7 @@ use App\Models\Location2;
 use App\Models\Measurement2;
 use App\Models\Location3;
 use App\Models\Measurement3;
+use Illuminate\Support\Facades\Http;
 
 class DashboardMapController extends Controller
 {
@@ -19,34 +20,90 @@ class DashboardMapController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $measurements = Measurement::join('locations', 'measurements.idLocation', '=', 'locations.idLocation')
-            ->orderBy('measurements.idMeasurement', 'asc')
-            ->get(['measurements.*', 'locations.latitude', 'locations.longitude']);
+{
+    // API endpoints
+    $urls = [
+        'smartsoil1' => 'https://mhj6nk8m26.execute-api.ap-southeast-2.amazonaws.com/Development/AllDataSmartSoil',
+        'smartsoil2' => 'https://mhj6nk8m26.execute-api.ap-southeast-2.amazonaws.com/Development/NPK',
+        'smartirrigation' => 'https://mhj6nk8m26.execute-api.ap-southeast-2.amazonaws.com/Development/SmartIrrigation',
+    ];
 
-        $locations = Location::get();
+    // Initialize variables for storing data
+    $datasmartsoil1 = [];
+    $datasmartsoil2 = [];
+    $datasmartirrigation = [];
+
+    // Fetch data from APIs
+    foreach ($urls as $key => $url) {
+        $response = Http::get($url);
         
-        $measurements2 = Measurement2::join('locations2', 'measurements2.idLocation', '=', 'locations2.idLocation')
-            ->orderBy('measurements2.idMeasurement', 'asc')
-            ->get(['measurements2.*', 'locations2.latitude', 'locations2.longitude']);
+        if ($response->successful()) {
+            $data = json_decode($response->body(), true);
 
-        $locations2 = Location2::get();
+            // Extract the required data based on the API source
+            switch ($key) {
+                case 'smartsoil1':
+                    $datasmartsoil1 = array_map(function ($item) {
+                        return [
+                            'TS' => $item['TS'],
+                            'latitude' => $item['latitude'],
+                            'longitude' => $item['longitude'],
+                            'temperature' => $item['temperature'],
+                            'ph' => $item['ph'],
+                            'moisture' => $item['moisture'],
+                            'nitrogen' => $item['nitrogen'],
+                            'fosfor' => $item['fosfor'],
+                            'kalium' => $item['kalium'],
+                            'conductivity' => $item['conductivity'],
+                            // Add other necessary fields here
+                        ];
+                    }, $data);
+                    break;
 
-        $measurements3 = Measurement3::join('locations3', 'measurements3.idLocation', '=', 'locations3.idLocation')
-            ->orderBy('measurements3.idMeasurement', 'asc')
-            ->get(['measurements3.*', 'locations3.latitude', 'locations3.longitude']);
+                case 'smartsoil2':
+                    $datasmartsoil2 = array_map(function ($item) {
+                        return [
+                            'TS' => $item['TS'],
+                            'latitude' => $item['latitude'],
+                            'longitude' => $item['longitude'],
+                            'ph' => $item['ph'],
+                            'kelembapan' => $item['kelembapan'],
+                            'nitrogen' => $item['nitrogen'],
+                            'phosporus' => $item['phosporus'],
+                            'kalium' => $item['kalium'],
+                            // Add other necessary fields here
+                        ];
+                    }, $data);
+                    break;
 
-        $locations3 = Location3::get();
-
-        return view('dashboard.map.index',[
-            'locations' => $locations,
-            'measurements' => $measurements,
-            'locations2' => $locations2,
-            'measurements2' => $measurements2,
-            'locations3' => $locations3,
-            'measurements3' => $measurements3,
-        ]);
+                case 'smartirrigation':
+                    $datasmartirrigation = array_map(function ($item) {
+                        return [
+                            'TS' => $item['TS'],
+                            'latitude' => $item['latitude'],
+                            'longitude' => $item['longitude'],
+                            'jarak' => $item['jarak'],
+                            'flowRate' => $item['flow rate'],
+                            'rainFall' => $item['curah hujan'],
+                            // Add other necessary fields here
+                        ];
+                    }, $data);
+                    break;
+            }
+        } else {
+            // Handle API request failure (e.g., log error, show error message)
+            abort(500, 'Failed to fetch data from API: ' . $url);
+        }
     }
+
+    return view('dashboard.map.index', [
+        'datasmartsoil1' => $datasmartsoil1,
+        'datasmartsoil2' => $datasmartsoil2,
+        'datasmartirrigation' => $datasmartirrigation,
+    ]);
+}
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -75,35 +132,11 @@ class DashboardMapController extends Controller
      * @param  \App\Models\Map  $map
      * @return \Illuminate\Http\Response
      */
-    public function show(Map $map)
+    public function show()
     {
-        $measurements = Measurement::join('locations', 'measurements.idLocation', '=', 'locations.idLocation')
-            ->orderBy('measurements.idMeasurement', 'asc')
-            ->get(['measurements.*', 'locations.latitude', 'locations.longitude']);
+    
+}
 
-        $locations = Location::get();
-        
-        $measurements2 = Measurement::join('locations2', 'measurements2.idLocation', '=', 'locations2.idLocation')
-            ->orderBy('measurements2.idMeasurement', 'asc')
-            ->get(['measurements2.*', 'locations2.latitude', 'locations2.longitude']);
-
-        $locations2 = Location::get();
-
-        $measurements3 = Measurement::join('locations3', 'measurements3.idLocation', '=', 'locations3.idLocation')
-            ->orderBy('measurements3.idMeasurement', 'asc')
-            ->get(['measurements3.*', 'locations3.latitude', 'locations3.longitude']);
-
-        $locations3 = Location::get();
-
-        return view('dashboard.map.index',[
-            'locations' => $locations,
-            'measurements' => $measurements,
-            'locations2' => $locations2,
-            'measurements2' => $measurements2,
-            'locations3' => $locations3,
-            'measurements3' => $measurements3,
-        ]);
-    }
 
     /**
      * Show the form for editing the specified resource.

@@ -6,11 +6,11 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="post" action="/dashboard/location/{{ $location->idLocation }}" class="mb-3"
+        <form method="post" action="/dashboard/location/{{ $location->TS }}" class="mb-3"
             enctype="multipart/form-data">
             @method('put')
             @csrf
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="name" class="form-label">Nama</label>
                 <input type="text" value="{{ $location->name }}" class="form-control @error('name') is-invalid @enderror"
                     name="name" id="name" required disabled value="{{ old('name') }}">
@@ -30,7 +30,7 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="latitude" class="form-label">Garis Lintang (Latitude)</label>
                 <input type="text" value="{{ $location->latitude }}"
@@ -53,7 +53,7 @@
                     </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="altitude" class="form-label">Ketinggian (Altitude)</label>
                 <input type="text" value="{{ $location->altitude }}"
                     class="form-control @error('altitude') is-invalid @enderror" name="altitude" id="altitude" required
@@ -63,7 +63,7 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div>
+            </div> --}}
 
             <label for="map" class="form-label">Lihat Peta</label>
             <div id="map"></div>
@@ -75,16 +75,15 @@
     <script>
         const latitude = document.querySelector("#latitude");
         const longitude = document.querySelector("#longitude");
-        const altitude = document.querySelector("#altitude");
 
-        var map = L.map('map').setView([latitude.value, longitude.value, altitude.value], 12);
+        var map = L.map('map').setView([latitude.value, longitude.value], 12);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var curLocation = [latitude.value, longitude.value, altitude.value];
+        var curLocation = [latitude.value, longitude.value];
         map.attributionControl.setPrefix(false);
 
         var marker = new L.marker(curLocation, {
@@ -92,12 +91,10 @@
         });
         map.addLayer(marker);
 
-        L.marker([latitude.value, longitude.value, altitude.value])
+        L.marker([latitude.value, longitude.value])
             .bindPopup(
-                "<div class='my-1'><strong>Name:</strong> <br>{{ $location->name }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location->latitude }}</div>" +
-                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location->latitude }}</div>" +
-                "<div class='my-1'><strong>Altitude:</strong> <br>{{ $location->altitude }}</div>"
+                "<div class='my-1'><strong>Longitude:</strong> <br>{{ $location->longitude }}</div>" +
+                "<div class='my-1'><strong>Latitude:</strong> <br>{{ $location->latitude }}</div>"
             ).addTo(map);
     </script>
 @endsection
