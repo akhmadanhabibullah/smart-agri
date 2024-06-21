@@ -16,7 +16,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // $highlights = Highlight::get();
+        // $features = Feature::get();
+        // $testimonials = Testimonial::get();
 
+        return view('index')->with(compact('highlights', 'features', 'testimonials'));
     }
 
     /**
