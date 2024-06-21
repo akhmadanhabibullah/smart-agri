@@ -4,7 +4,7 @@
     {{-- leaflet full here --}}
 
     <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 border-bottom">
-        <h1 class="h2">Selamat datang di Dashboard Tanah Pintar #2, {{ auth()->user()->name }}</h1>
+        <h1 class="h2">Selamat datang di Dashboard Tanah Pintar #2, Admin</h1>
         <h1 class="h6 fw-lighter">Alat tanah pintar untuk menghitung lima parameter yaitu ph, kelembaban, nitrogen,
             fosfor, dan kalium yang memengaruhi proses proses pertanian</h1>
     </div>

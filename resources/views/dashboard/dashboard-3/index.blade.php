@@ -4,7 +4,7 @@
     {{-- leaflet full here --}}
 
     <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 border-bottom">
-        <h1 class="h2">Selamat datang di Dashboard Air Pintar, {{ auth()->user()->name }}</h1>
+        <h1 class="h2">Selamat datang di Dashboard Air Pintar, Admin</h1>
         <h1 class="h6 fw-lighter">
             Alat air pintar untuk menghitung tiga parameter, yaitu jarak, laju arus, dan curah hujan yang mempengaruhi
             proses pengairan

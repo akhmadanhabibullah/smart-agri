@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardHighlightController;
 use App\Http\Controllers\DashboardFeatureController;
-use App\Http\Controllers\DashboardTestimonialController;
 use App\Http\Controllers\DashboardMeasurementController;
 use App\Http\Controllers\DashboardLocationController;
 use App\Http\Controllers\DashboardMapController;
@@ -74,10 +73,7 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/getLocationDetails/{idLocation}', [Dashboard3MeasurementController::class, 'getLocationDetails']);
     Route::resource('/measurement', DashboardMeasurementController::class)->middleware('guest');
     Route::resource('/location', DashboardLocationController::class)->middleware('guest');
-    Route::resource('/feature', DashboardFeatureController::class)->middleware('guest');
-    Route::resource('/testimonial', DashboardTestimonialController::class)->middleware('guest');
     Route::resource('/map', DashboardMapController::class)->middleware('guest');
-    Route::resource('/highlight', DashboardHighlightController::class)->middleware('guest');
     Route::resource('', DashboardController::class)->middleware('guest');
     Route::resource('/dashboard-1', Dashboard1Controller::class)->middleware('guest');
     Route::resource('/dashboard-2', Dashboard2Controller::class)->middleware('guest');
