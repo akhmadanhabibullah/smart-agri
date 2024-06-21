@@ -19,7 +19,7 @@
         <!-- Navigation-->
         @include('layouts.main')
         <!-- Masthead-->
-        @foreach ($highlights as $highlight)
+        {{-- @foreach ($highlights as $highlight) --}}
         <header class="masthead" style="background-image: url('img/steven-weeks-DUPFowqI6oI-unsplash(1).jpg');">
             <div class="container position-relative">
                 <div class="row justify-content-center">
@@ -68,7 +68,7 @@
                 </div>
             </div>
         </header>
-        @endforeach
+        {{-- @endforeach --}}
         
         <!-- Icons Grid-->
         

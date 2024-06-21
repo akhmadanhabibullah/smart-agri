@@ -20,7 +20,8 @@ class HomeController extends Controller
         // $features = Feature::get();
         // $testimonials = Testimonial::get();
 
-        return view('index')->with(compact('highlights', 'features', 'testimonials'));
+        return view('index');
+        // ->with(compact('highlights', 'features', 'testimonials'));
     }
 
     /**
