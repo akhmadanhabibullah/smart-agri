@@ -33,7 +33,11 @@
     <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
             <a class="navbar-brand" href="/">Smart Agriculture</a>
-            <a class="btn btn-primary" href="/dashboard">Dashboard</a>
+            @auth
+                <a class="btn btn-primary" href="/dashboard">Dashboard</a>
+            @else
+                <a class="btn btn-primary" href="/login">Login</a>
+            @endauth
         </div>
     </nav>
 
